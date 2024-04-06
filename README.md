@@ -1,4 +1,4 @@
-# Comandos útiles
+# Comandos útiles para tener a mano
 
 Para ejecutar la API directamente sin necedidad de Docker:
 
