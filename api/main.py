@@ -14,8 +14,8 @@ database_password = os.getenv("DATABASE_PASSWORD")
 
 uri = f"mongodb+srv://{database_user}:{database_password}@{database_url}"
 client = MongoClient(uri)
-db = client["sample_mflix"]
-collection = db["comments"]
+db = client["ugo"]
+collection = db["experiences"]
 
 app = FastAPI()
 
@@ -30,7 +30,7 @@ async def create_item(item: Item):
 
 @app.get("/items/")
 async def read_items():
-    items = list(collection.find({}, { "_id": 0, "name": 1, "email": 1, "text": 1 }))
+    items = list(collection.find({}, { "_id": 0, "type": 1, "name": 1, "email": 1, "text": 1 }))
     return items
 
 @app.delete("/items/")
