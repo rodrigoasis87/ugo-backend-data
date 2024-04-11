@@ -14,10 +14,10 @@ if st.button('Crear ítem'):
         st.error('Algo salió mal')
 
 if st.button('Mostrar ítems'):
-    response = requests.get('http://fastapi_app:8000/items/')
+    response = requests.get('http://localhost:8000/items/')
     if response.status_code == 200:
         items = response.json()
         for item in items:
-            st.write(f"Nombre: {item['name']}, Texto: {item['text']}")
+            st.write(f"Nombre: {item['type']}")
     else:
         st.error('Algo salió mal')
