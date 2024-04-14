@@ -13,8 +13,9 @@ MSG_404 = "Experience not found"
 
 
 @router.get("/", response_description="List all experiences", response_model=List[ExperienceResponse])
-def list_experiences(request: Request):
-    return list(request.app.database["experiences"].find(limit=100))
+def list_experiences(request: Request, category: str | None = None):
+    query = {"type": category} if category else {}
+    return list(request.app.database["experiences"].find(query, limit=100))
 
 
 # POST /experience : Creates a new experience

@@ -6,6 +6,7 @@ from typing import Optional
 class Experience(BaseModel):
     name: str = Field(...)
     description: str = Field(...)
+    type: str = Field(...)
 
 
 class ExperienceResponse(BaseModel):
