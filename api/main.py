@@ -1,43 +1,35 @@
-from fastapi import FastAPI
-from pymongo import MongoClient
-from pydantic import BaseModel
-from dotenv import load_dotenv
 import os
 
-# Carga las variables de entorno desde .env y sobrescribe con cualquier variable de .env.local si existe
-load_dotenv(override=True)  # Asegúrate de poner `override=True` para permitir sobrescribir con .env.local
+from dotenv import load_dotenv
+from fastapi import FastAPI
+from pymongo import MongoClient
+from api.routes import router as experience_router
 
-# Uso de las variables de entorno
-database_url = os.getenv("DATABASE_URL")
+load_dotenv(override=True)
+
 database_user = os.getenv("DATABASE_USER")
 database_password = os.getenv("DATABASE_PASSWORD")
+database_url = os.getenv("DATABASE_URL")
+database_name = os.getenv("DATABASE_NAME")
 
-uri = f"mongodb+srv://{database_user}:{database_password}@{database_url}"
-client = MongoClient(uri)
-db = client["ugo"]
-collection = db["experiences"]
+connection_string = f"mongodb+srv://{database_user}:{database_password}@{database_url}"
 
 app = FastAPI()
 
-class Item(BaseModel):
-    name: str
-    description: str
 
-@app.post("/items/")
-async def create_item(item: Item):
-    collection.insert_one(item.model_dump())
-    return item
+@app.on_event("startup")
+def startup_db_client():
+    app.mongodb_client = MongoClient(connection_string)
+    app.database = app.mongodb_client[database_name]
 
-@app.get("/items/")
-async def read_items():
-    items = list(collection.find({}, { "_id": 0, "type": 1, "name": 1, "email": 1, "text": 1 }))
-    return items
 
-@app.delete("/items/")
-async def delete_all_items():
-    collection.delete_many({})
-    return "Done"
+@app.on_event("shutdown")
+def shutdown_db_client():
+    app.mongodb_client.close()
 
-@app.get("/")
-async def server_up():
-    return "Server UP and running..."
+
+app.include_router(
+    experience_router,
+    tags=["experiences"],
+    prefix="/experience"
+)
