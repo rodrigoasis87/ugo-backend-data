@@ -76,8 +76,10 @@ def delete_experience(id: str, request: Request, response: Response):
 
 # GET /experience/{id}/review
 
-@router.get("/{id}", response_description="Returns all reviews for a given experience")
-def return_reviews(id: str, request: Request, response_model=List[Review]):
-    if (reviews := request.app.database["reviews"].find({"exp_id": ObjectIdField(id)})) is not None:
-        return reviews
+@router.get("/{id}/review", response_description="Returns all reviews for a given experience", response_model=List[Review])
+def return_reviews(id: str, request: Request):
+    id = ObjectIdField(id)
+    reviews = request.app.database["reviews"].find({"exp_id": id})
+    if reviews is not None:
+        return list(reviews)
     raise HTTPException(status_code=HTTP_404, detail=MSG_404)

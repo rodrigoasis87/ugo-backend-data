@@ -23,4 +23,4 @@ class ExperienceUpdate(BaseModel):
 class Review(BaseModel):
     title: str = Field(...)
     opinion: str = Field(...)
-    exp_id: ObjectIdField = Field(..., alias="_id")
+    exp_id: ObjectIdField = Field(...)
