@@ -2,7 +2,7 @@ from fastapi import APIRouter, Body, Request, Response, HTTPException, status
 from fastapi.responses import JSONResponse
 from pydantic_mongo import ObjectIdField
 from typing import List
-from api.models import Experience, ExperienceResponse, ExperienceUpdate
+from api.models import Experience, ExperienceResponse, ExperienceUpdate, Review
 
 router = APIRouter()
 
@@ -71,4 +71,13 @@ def delete_experience(id: str, request: Request, response: Response):
         response.status_code = status.HTTP_204_NO_CONTENT
         return response
 
+    raise HTTPException(status_code=HTTP_404, detail=MSG_404)
+
+
+# GET /experience/{id}/review
+
+@router.get("/{id}", response_description="Returns all reviews for a given experience")
+def return_reviews(id: str, request: Request, response_model=List[Review]):
+    if (reviews := request.app.database["reviews"].find({"exp_id": ObjectIdField(id)})) is not None:
+        return reviews
     raise HTTPException(status_code=HTTP_404, detail=MSG_404)

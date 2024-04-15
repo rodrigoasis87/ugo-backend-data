@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from pymongo import MongoClient
-from api.routes import router as experience_router
+from api.routes_experience import router as experience_router
 
 load_dotenv(override=True)
 
