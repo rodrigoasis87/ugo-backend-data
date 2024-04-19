@@ -23,4 +23,10 @@ class ExperienceUpdate(BaseModel):
 class Review(BaseModel):
     title: str = Field(...)
     opinion: str = Field(...)
-    exp_id: ObjectIdField = Field(...)
+
+
+class ReviewResponse(BaseModel):
+    id: str = Field(..., )
+    exp_id: str = Field(...)
+    title: str = Field(...)
+    opinion: str = Field(...)

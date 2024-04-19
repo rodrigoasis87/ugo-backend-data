@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   fastapi_app:
-    image: ugo-backend-data-api:latest
+    image: ugo-backend-data:latest
     ports:
       - "8000:8000"
     volumes:
@@ -14,7 +14,7 @@ services:
       - app_network
 
   streamlit_app:
-    image: ugo-backend-data-web:latest
+    image: ugo-backend-data:latest
     ports:
       - "8501:8501"
     volumes:

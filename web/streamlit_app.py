@@ -6,18 +6,19 @@ st.title('Ugo! App - Backend Data Analytics Service')
 name = st.text_input('Nombre')
 description = st.text_area('Descripción')
 
-if st.button('Crear ítem'):
-    response = requests.post('http://localhost:8000/items/', json={'name': name, 'description': description})
+if st.button('Crear experiencia'):
+    response = requests.post('http://localhost:8081/items/',
+                             json={'name': name, 'description': description})
     if response.status_code == 200:
         st.success('Ítem creado exitosamente!')
     else:
         st.error('Algo salió mal')
 
-if st.button('Mostrar ítems'):
-    response = requests.get('http://localhost:8000/items/')
+if st.button('Mostrar experiencias'):
+    response = requests.get('http://localhost:8081/experience')
     if response.status_code == 200:
         items = response.json()
         for item in items:
-            st.write(f"Nombre: {item['type']}")
+            st.write(f"Nombre: {item['name']}")
     else:
         st.error('Algo salió mal')
