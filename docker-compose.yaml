@@ -1,27 +1,34 @@
-version: '3.8'
-
 services:
   fastapi_app:
-    image: ugo-backend-data:latest
+    image: dfanaro/ugo-backend-data:latest
+    container_name: fastapi_app
+    command: "./runner.sh"
     ports:
-      - "8000:8000"
-    volumes:
-      - .:/app
+      - "8081:8081"
     environment:
       - UVICORN_HOST=0.0.0.0
-      - UVICORN_PORT=8000
+      - UVICORN_PORT=8081
+      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - APP=api
+      - PORT=8081
     networks:
       - app_network
 
   streamlit_app:
-    image: ugo-backend-data:latest
+    image: dfanaro/ugo-backend-data:latest
+    container_name: streamlit_app
+    command: "./runner.sh"
     ports:
-      - "8501:8501"
-    volumes:
-      - .:/app
+      - "8082:8082"
     environment:
-      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_PORT=8082
       - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - API_URL=${API_URL}
+      - APP=web
+      - PORT=8082
     depends_on:
       - fastapi_app
     networks:

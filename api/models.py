@@ -2,6 +2,8 @@ from pydantic import BaseModel, Field
 from pydantic_mongo import ObjectIdField
 from typing import Optional
 
+NOT_FOUND_IMAGE = "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1200,h=630,fit=crop,f=jpeg/mk3Ew9MwlbcqZJba/img-YbNxzkRwGaHlxOXV.jpg"
+
 
 class Experience(BaseModel):
     name: str = Field(...)
@@ -24,8 +26,8 @@ class ExperienceResponse(BaseModel):
     province: str = Field(...)
     price_min: int = Field(...)
     price_max: int = Field(...)
-    discount: int = Field(...)
-    imageUrl: str = Field(...)
+    discount: int = Field(0)
+    imageUrl: str = Field(NOT_FOUND_IMAGE)
 
 
 class ExperienceUpdate(BaseModel):
