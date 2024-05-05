@@ -1,7 +1,35 @@
 import streamlit as st
+from streamlit_modal import Modal
+import streamlit.components.v1 as components
 import requests
 
 st.title('Ugo! App - Backend Data Analytics Service')
+
+modal = Modal(
+    "Demo Modal", 
+    key="demo-modal",
+)
+
+open_modal = st.button("Open")
+if open_modal:
+    modal.open()
+
+# if modal.is_open():
+#     with modal.container():
+#         st.write("Text goes here")
+
+#         html_string = '''
+#         <h1>HTML string in RED</h1>
+
+#         <script language="javascript">
+#             document.querySelector("h1").style.color = "red";
+#         </script>
+#         '''
+#         components.html(html_string)
+
+#         st.write("Some fancy text")
+#         value = st.checkbox("Check me")
+#         st.write(f"Checkbox checked: {value}")
 
 country_province = {
     "Argentina": ["Buenos Aires", "Córdoba", "Mendoza", "Neuquén"],
@@ -26,15 +54,59 @@ if st.button('Crear experiencia'):
     else:
         st.error('Algo salió mal')
 
+# mostrar experiencias sin botón
+
+# if st.button('Mostrar experiencias'):
+#     response = requests.get('http://localhost:8000/experience/')
+#     if response.status_code == 200:
+#         items = response.json()
+#         for item in items:
+#             st.write(f"Nombre: {item['name']}")
+#     else:
+#         st.error('Algo salió mal')
+
+
+# mostrar experiencia con botón de review
+
 if st.button('Mostrar experiencias'):
     response = requests.get('http://localhost:8000/experience/')
     if response.status_code == 200:
         items = response.json()
         for item in items:
-            st.write(f"Nombre: {item['name']}")
+            st.write(
+                f"Nombre: {item['name']}\n"  
+                f"Tipo: {item['type']}\n"  
+                f"Descripción: {item['description']}" 
+            )
+            
+            if st.button('Abrir'):
+                modal.open()
+
+            if modal.is_open():
+                with modal.container():
+                    st.write("Text goes here")
+            
     else:
         st.error('Algo salió mal')
 
 
+
+
+# editar experiencias
+
 if st.button('Editar experiencias'):
     respone = requests.put('')
+
+
+
+# postear reviews
+
+if st.button('Insertar review'):
+    response = requests.post('http://localhost:8000/experience/',
+                             json={'name': name, 'type': type_value, 'description': description, 
+                                   'country': country, 'province': province, 'price_min': price_min,
+                                   'price_max': price_max})
+    if response.status_code == 201:
+        st.success('Ítem creado exitosamente!')
+    else:
+        st.error('Algo salió mal')

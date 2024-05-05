@@ -11,6 +11,8 @@ class Experience(BaseModel):
     province: str = Field(...)
     price_min: int = Field(...)
     price_max: int = Field(...)
+    discount: int = Field(...)
+    imageUrl: str = Field(...)
 
 
 class ExperienceResponse(BaseModel):
@@ -22,6 +24,8 @@ class ExperienceResponse(BaseModel):
     province: str = Field(...)
     price_min: int = Field(...)
     price_max: int = Field(...)
+    discount: int = Field(...)
+    imageUrl: str = Field(...)
 
 
 class ExperienceUpdate(BaseModel):
