@@ -13,8 +13,8 @@ class Experience(BaseModel):
     province: str = Field(...)
     price_min: int = Field(...)
     price_max: int = Field(...)
-    discount: int = Field(...)
-    imageUrl: str = Field(...)
+    discount: int = Field(0)
+    imageUrl: str = Field(NOT_FOUND_IMAGE)
 
 
 class ExperienceResponse(BaseModel):
