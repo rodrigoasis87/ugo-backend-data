@@ -4,7 +4,7 @@ from pydantic_mongo import ObjectIdField
 from typing import List
 from api.models import Review, ReviewResponse
 
-router = APIRouter()
+router_r = APIRouter()
 
 HTTP_404 = status.HTTP_404_NOT_FOUND
 MSG_404 = "Experience not found"
@@ -12,7 +12,7 @@ MSG_404 = "Experience not found"
 
 # GET /experience/{id}/review
 
-@router.get("/{id}/review", response_description="Returns all reviews for a given experience", response_model=List[Review])
+@router_r.get("/{id}/review", response_description="Returns all reviews for a given experience", response_model=List[Review])
 def return_reviews(id: str, request: Request):
     id = ObjectIdField(id)
     reviews = request.app.database["reviews"].find({"exp_id": id})
@@ -23,7 +23,7 @@ def return_reviews(id: str, request: Request):
 
 # POST /experience/{id}/review
 
-@router.post("/{id}/review", response_description="Create a new experience review", status_code=status.HTTP_201_CREATED, response_model=ReviewResponse)
+@router_r.post("/{id}/review", response_description="Create a new experience review", status_code=status.HTTP_201_CREATED, response_model=ReviewResponse)
 def create_review(id: str, request: Request, review: Review = Body(...)):
     item_dict = review.model_dump()
     item_dict["exp_id"] = ObjectIdField(id)

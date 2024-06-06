@@ -21,9 +21,9 @@ open_modal = st.button("Open")
 if open_modal:
     modal.open()
 
-# if modal.is_open():
-#     with modal.container():
-#         st.write("Text goes here")
+if modal.is_open():
+    with modal.container():
+        st.write("Text goes here")
 
 #         html_string = '''
 #         <h1>HTML string in RED</h1>
@@ -50,6 +50,7 @@ country = st.selectbox("País", list(country_province.keys()))
 province = st.selectbox("Provincia", country_province[country])
 price_min = st.number_input("Precio mínimo", step=1)
 price_max = st.number_input("Precio máximo", step=1)
+discount = st.number_input("Descuento", step=1)
 
 if st.button("Crear experiencia"):
     response = requests.post(
@@ -62,6 +63,7 @@ if st.button("Crear experiencia"):
             "province": province,
             "price_min": price_min,
             "price_max": price_max,
+            "discount": discount
         },
     )
     if response.status_code == 201:
@@ -95,12 +97,12 @@ if st.button("Mostrar experiencias"):
                 f"Descripción: {item['description']}"
             )
 
-            if st.button("Abrir", key={item["_id"]}):
-                modal.open()
+            # if st.button("Abrir", key={item["_id"]}):
+            #     modal.open()
 
-            if modal.is_open():
-                with modal.container():
-                    st.write("Text goes here")
+            # if modal.is_open():
+            #     with modal.container():
+            #         st.write("Text goes here")
 
     else:
         st.error("Algo salió mal")
